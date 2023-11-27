@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "swap_ints.h": "c",
+        "stdio.h": "c"
+    }
+}

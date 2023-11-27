@@ -1,0 +1,8 @@
+0.
+Running Zero Gives You The Answer.
+1.
+For 1 I ran the program and realized that it was generating random numbers using the rand function from the standard library. I put a breakpoint on the rand function and ran the program and when it hit the break point I called the finish command to finish the running of the function and it shows the value that it had generated and i copied that number and continued the execution of it. I put in the random number and got the secret.
+2.
+Running the program 2 it hints that it is searching for a file name and its returning an error to the stderr. Opening files is a system call so using strace we find the file that the program is trying to open. We find that it is a file named "iamspecial" that its trying to open. Creating a file in the same directory, it presents another error but this time a permission error. Giving the file executable priviledges we are prompted with the secret.
+3.
+This one seemed to be trying to link a function dynamically. We see this by calling ltrace on it and we see a call to secretoperation that is failing. it also explicitly tells us that lib361.so (a shared object file) is missing. adding these two pieces together is to create lib361 shared library with the function secretoperation in it that takes three parameters. Running it shows that it is doing somehting arithemtic as an assertion error showed that the  way I was adding numbers was wrong. Fixing it for the first sequence of 3,6,1 worked but failed on the second assertion that was 1,2,2. This implied that the last two numbers were added and if the result was no even the first was added. Doing this caused the secret to be revealed easily. 

@@ -1,0 +1,149 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Welcome to the MAT320 Homework template on Overleaf -- just edit your
+% LaTeX on the left, and we'll compile it for you on the right.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --------------------------------------------------------------
+% Based on a homework template by Dana Ernst.
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{ex}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{sol}[1][Solution]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1:}]}{\end{trivlist}}
+
+
+\begin{document}
+
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+
+\noindent Janeet Bajracharya \hfill {\Large MATH309: Homework 3} \hfill \today
+
+\begin{ex}{4.a} 
+What is the mode of a normal distribution with parameters $\mu$ and $\sigma$.
+\end{ex}
+
+\begin{sol}\
+For a normal distribution with parameters $\mu$ and $\sigma$:\\\\
+$\mu$ = Median = Mode
+\\\\
+Therefore, Mode = $\mu$.
+\end{sol}\
+\newpage
+\begin{ex}{4.b}
+Does the uniform distribution with parameters A and B have a single mode? Why or why not?
+\end{ex}
+\begin{sol}
+Uniform Distributions $f_X(x;A,B) = \frac{1}{B-A}$ is constant for all x. Hence the $f_X(x;A,B)_{MAX}$ is all $x$ such that $A\leq x \leq B$. Hence, such a distribution cannot have a Singular Mode.
+\end{sol}
+\newpage
+\begin{ex}{4.c}
+What is the mode of an exponential distribution with parameter $\lambda$? (Draw
+a picture)
+\end{ex}
+\begin{sol}\
+\[
+f_X(x) = \lambda e^{-\lambda x}  {x\geq0}
+\]
+Since,
+\[
+0 < e^{-\lambda x} \leq 1
+\]
+\[
+\text{$f_X(x)$ is Maximized when $e^{-\lambda x} = 1$ which is at $x=0$.}
+\]\\
+Therefore,
+\[
+f_X(0) = \lambda = f_X(x)_{MAX}
+\]
+\\
+\[
+\text{The Mode is at $x = 0$.}
+\]
+
+\includegraphics[scale]{image}
+
+\end{sol}
+\newpage
+\begin{ex}{4.d} 
+If X has a gamma distribution with parameters $\alpha$ and $\beta$, and $\alpha$ $>$ 1, find
+the mode
+\end{ex}
+\begin{sol}\
+\[
+f_X(x) = \dfrac{\beta^\alpha}{\gamma(\alpha)} * x^{\alpha-1} * e^{-\beta x}
+\]
+
+\[
+f_X(x) = \frac{\beta^\alpha}{\Gamma(\alpha)} x^{\alpha-1} \exp(-\beta x)
+\]
+
+Since we are trying to maximize the function for some x we have to take a derivative of the function to find the $x$ where the Derivative is zero. Hence, we omit the constants ie. the terms without x's from the equation as they are be removed through derivatives either ways. 
+
+\[
+\log(f_X(x)) = (\alpha - 1) \log(x) - \beta x + \text{constants}
+\]
+Taking the derivative of the natural log of the function.\\
+\[
+\frac{d}{dx}\left(\log(f_X(x))\right) = \frac{\alpha - 1}{x} - \beta
+\]
+\\\\
+Set the derivative to be 0 for maximum point since its a PDF. 
+\[
+0 = \frac{\alpha-1}{x} - \beta
+\]
+Therefore, The Mode is at: 
+\[
+x = \frac{\alpha -1}{\beta}
+\]
+\end{sol}
+\newpage
+\begin{ex}{4.e}
+What is the mode of a chi-squared distribution having $\nu$ degrees of freedom ? 
+\end{ex}
+\begin{sol}
+\[
+f_X(x) = \frac{2^{\nu/2} x^{\frac{\nu}{2} -1} e^{-\frac{x}{2}}}{\Gamma(\nu/2)}
+\]
+
+Taking the natural log of the equation and then taking the derivative with respect to x. Set the derivative to 0 to find the maximum since this is a continuous PDF and omit constants as the derivative would evaluate to zero. 
+\[
+\log{f_X(x)} = ({\frac{\nu}{2} -1})x - \frac{x}{2} + \text{constants}w
+\]
+\[
+\frac{d}{dx}(log{f_X(x)}) = ({\frac{\nu}{2} -1})\frac{d}{dx} {\log{x}} - \frac{d}{dx}{\frac{x}{2}}
+\]
+
+\[
+0 = {(\frac{\nu}{2} -1)} * \frac{1}{x} - \frac{1}{2}
+\]
+
+\[
+\frac{1}{2} = \frac{\nu -2}{2x}
+\]
+\\ 
+\[
+x = \nu -2
+\]
+\\
+The Mode exists at $x = \nu -2$ where $\nu \geq 2$. If $\nu \leq 2$ then the Mode is 0.
+\end{sol}
+
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+
+\end{document}
