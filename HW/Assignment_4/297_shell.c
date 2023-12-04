@@ -75,6 +75,7 @@ char *get_bin_path(char *executable_name)
         size_t full_path_size = strlen(PATH[i]) + strlen(executable_name) + 1;
         // Allocate memory for full_path dynamically
         char *full_path = malloc(full_path_size);
+        full_path[0]='\0';
         // Check if memory allocation is successful
         if (full_path == NULL)
         {

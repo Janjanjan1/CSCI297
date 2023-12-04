@@ -18,47 +18,64 @@ typedef struct header
 // This is the initial allocator. It covers the entire heap minus the block header size.
 void init_allocator()
 {
+
     header_t *header = (header_t *)heap;
     header->size = HEAP_SIZE - BLOCK_HEADER_SIZE;
     header->free = true;
-    printf("\nBeginning of the Heap:%p | End of the Heap:%p\n", heap, ((char *)heap) + HEAP_SIZE);
 }
 
 // This is a helper function used by my_malloc. It searches through the heap using block headers to find a free block.
 header_t *find_free_block(size_t size)
 {
+
     header_t *ptr = (header_t *)heap;
-    while (((char *)ptr) + size <= (char *)heap + HEAP_SIZE)
+    while (((char *)ptr) + size + BLOCK_HEADER_SIZE <= (char *)heap + HEAP_SIZE)
     {
-        printf("\nPTR:%p, Is PTR FREE:%d, PTR->size:%zu | Req Size:%zu", ptr, ptr->free, ptr->size, size);
         if (ptr->free && ptr->size >= size)
         {
             return ptr;
         }
-        ptr = (header_t *)((char *)ptr) + ptr->size + 1;
+        // Paranthesis here is crucial !
+        ptr = (header_t *)(((char *)ptr) + ptr->size + BLOCK_HEADER_SIZE);
     }
-    printf("\n Quitting Ptr at: %p", ptr);
     return NULL;
 }
 
 // This is another helper function used by my_malloc to split the blocks if necessary.
 void split_block(header_t *block, size_t size)
 {
-    // printf("\nStaring:%p|Ending:%p", (char *)block, (char *)block + size);
+    // Find the excess space. Will be size of the new block we create - BLOCK_HEADER_SIZE.
     size_t diff = block->size - size;
+    // Change Size of the current block to just size.
     block->size = size;
-    header_t *ptr = (header_t *)((char *)block) + size + 1;
+    // Cast the address @ block+size as a header and mark as free with size size.
+    header_t *ptr = (header_t *)(((char *)block) + size + BLOCK_HEADER_SIZE);
     ptr->free = true;
     ptr->size = diff - BLOCK_HEADER_SIZE;
-    // printf("\nSize Requested: %zu, Difference: %zu, New Free Space:%p\n", size, diff, ptr);
 }
 
 // This is a helper function that coalesces blocks when freeing them.
 // You need to implement this function.
 void coalesce()
 {
-
-    // COMPLETE THIS FUNCTION
+    header_t *prev = (header_t *)heap;
+    header_t *next;
+    while ((char *)prev + BLOCK_HEADER_SIZE + prev->size <= (char *)heap + HEAP_SIZE)
+    {
+        next = (header_t *)((char *)prev + prev->size + BLOCK_HEADER_SIZE);
+        if (next->free && prev->free)
+        {
+            // If both prev and next are free then merge and donot update prev so
+            // we can calculate next using the new merged size.
+            prev->size = prev->size + next->size + BLOCK_HEADER_SIZE;
+        }
+        else
+        {
+            // Next or Prev was an allocated block so keep traversing.
+            prev = next;
+        }
+    }
+    return;
 }
 
 // The main malloc function that allocated memory, or returns Null if no block is found.
@@ -90,23 +107,17 @@ void my_free(void *ptr)
     }
     header_t *block = (header_t *)((char *)ptr - BLOCK_HEADER_SIZE);
     block->free = true;
-    // coalesce(); // Coalesce if possible
+    coalesce(); // Coalesce if possible
 }
 
 int main()
 {
-
     // Initialize the heap
     init_allocator();
-    printf("Size of BlockHeader:%zu", BLOCK_HEADER_SIZE);
     // Test the heap.
     void *ptr1 = my_malloc(500);
-    printf("\nFree Space Ptr: %p | Ending:%p \n", ptr1, ((char *)heap) + BLOCK_HEADER_SIZE + 500);
     printf("Allocated %ld bytes\n", ((header_t *)((char *)ptr1 - BLOCK_HEADER_SIZE))->size);
-    // my_free(ptr1);
-    // printf("Block freed\n");
-    void *ptr2 = my_malloc(10);
-    printf("\nFree Space Ptr: %p\n", ptr2);
-
+    my_free(ptr1);
+    printf("Block freed\n");
     return 0;
 }
